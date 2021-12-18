@@ -29,7 +29,7 @@ exports.producer = async (eventName, data) => {
 
 exports.consumer = async (eventName, callback) => {
 	const consumer = kafka.consumer({
-		groupId: 'test-group',
+		groupId: 'node-group',
 		maxBytes: 1048576000, // 1GB
 		maxBytesPerPartition: 1048576000, // 1GB
 		sessionTimeout: 60000,
