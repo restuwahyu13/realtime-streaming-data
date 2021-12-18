@@ -1,0 +1,85 @@
+version: '3.8'
+services:
+  ### ===================
+  ### ZOOKEEPER SERVICE
+  ### ===================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    restart: "always"
+    healthcheck:
+      start_period: 60ms
+      timeout: 30s
+      interval: 15s
+      retries: 5
+      test: ifconfig | grep broadcast
+    environment:
+      - ZOOKEEPER_SERVER_ID=1
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIMES=2000
+      - ZOOKEEPER_INIT_LIMIT=5
+      - ZOOKEEPER_SYNC_LIMIT=2
+    ports:
+      - 2181:2181
+    volumes:
+      - zk-data:/var/lib/zookeper/data
+    networks:
+      - docker_networks
+  # ====================
+  # KAFKA SERVICE
+  # ====================
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    restart: "always"
+    healthcheck:
+      start_period: 60ms
+      timeout: 30s
+      interval: 15s
+      retries: 5
+      test: ifconfig | grep broadcast
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    ports:
+      - 9092:9092
+    volumes:
+      - kf-data:/var/lib/kafka/data
+    networks:
+      - docker_networks
+    depends_on:
+      - zookeeper
+  ##############################
+  # PG SERVICE
+  ##############################
+  pg:
+    image: postgres:14-alpine
+    restart: "always"
+    healthcheck:
+      start_period: 60ms
+      timeout: 30s
+      interval: 15s
+      retries: 5
+      test: ifconfig | grep broadcast
+    environment:
+      - POSTGRES_USER=restuwahyu13
+      - POSTGRES_PASSWORD=restuwahyu13
+      - POSTGRES_DB=postgres
+    ports:
+      - 5433:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - docker_networks
+  #############################
+  # PERSISTENT DATA
+  #############################
+volumes:
+  zk-data: null
+  kf-data: null
+  pg-data: null
+    ################################
+    # SAME NETWORKS FOR ALL SERVICE
+    ###############################
+networks:
+  docker_networks: null

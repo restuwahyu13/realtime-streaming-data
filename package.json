@@ -1,0 +1,39 @@
+{
+	"name": "realtime-streaming-data",
+	"version": "1.0.0",
+	"description": "Realtime streaming data with Socket.io and Kafka",
+	"main": "index.js",
+	"scripts": {
+		"build": "next build client",
+		"start": "node index.js",
+		"dev": "nodemon index.js",
+		"kmig": "npx knex --knexfile knexfile.ts migrate:latest",
+		"kroll": "npx knex --knexfile knexfile.ts migrate:rollback",
+		"klist": "npx knex --knexfile knexfile.ts migrate:list",
+		"krun": "npx knex --knexfile knexfile.ts seed:run"
+	},
+	"keywords": [
+		"kafkajs",
+		"realtime",
+		"socket.io"
+	],
+	"author": "restuwahyu13",
+	"license": "MIT",
+	"dependencies": {
+		"axios": "^0.24.0",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"express-async-errors": "^3.1.1",
+		"kafkajs": "^1.15.0",
+		"knex": "^0.95.14",
+		"next": "^12.0.7",
+		"pg": "^8.7.1",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"socket.io": "^4.4.0",
+		"socket.io-client": "^4.4.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
+}
